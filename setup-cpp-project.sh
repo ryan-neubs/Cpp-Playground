@@ -25,7 +25,19 @@ EOF
 
 # Create a CMakeLists.txt file for the src directory
 cat > $project_name/src/CMakeLists.txt << EOF
+add_library(main_lib main_lib.cpp)
 add_executable(${PROJECT_NAME} main.cpp)
-target_include_directories(${PROJECT_NAME} PUBLIC ../include)
+target_include_directories(main_lib PUBLIC ../include)
+target_link_libraries(${PROJECT_NAME} PRIVATE main_lib)
 EOF
 
+# Create a CMakeLists.txt file for the tests directory
+cat > $project_name/tests/CMakeLists.txt << EOF
+FetchContent_Declare(
+googletest 
+GIT_REPOSITORY https://github.com/google/googletest.git
+GIT_TAG v1.17.0 
+)
+
+
+EOF
