@@ -15,7 +15,7 @@ if ! command -v cmake &> /dev/null; then
     echo "WARNING: CMake is not installed. It is a required part of this script."
     read -p "Would you like to proceed? (y/n): " choice
     if [[ $choice =~ ^[Yy]$ ]]; then
-        sudo apt install cmake
+        sudo apt install cmake -y
     else
         echo "CMake will not be installed."
         echo "Aborting script..."
@@ -30,7 +30,7 @@ if ! command -v git &> /dev/null; then
     echo "WARNING: Git is not installed. It is a required part of this script."
     read -p "Would you like to proceed? (y/n): " choice
     if [[ $choice =~ ^[Yy]$ ]]; then
-        sudo apt install git
+        sudo apt install git -y
     else
         echo "Git will not be installed."
         echo "Aborting script..."
@@ -54,7 +54,7 @@ if ! command -v g++ &> /dev/null && ! command -v clang++ &> /dev/null; then
             case $opt in
                 "clang++")
                     echo "Installing clang++..."
-                    sudo apt install clang++
+                    sudo apt install clang++ -y
                     break
                     ;;
                 "g++")
