@@ -89,9 +89,27 @@ int main() {
     std::cout << "Hello World!\n";
 }
 EOF
-touch $project_name/src/main_lib.cpp
-touch $project_name/include/main_lib.hpp
-touch $project_name/tests/main_lib_test.cpp
+
+cat > $project_name/src/main_lib.cpp << EOF
+#include <string>
+
+std::string create_hello_world() {
+    return "Hello, World!\n";
+}
+EOF
+
+cat > $project_name/include/main_lib.h << EOF
+std::string create_hello_world();
+EOF
+
+cat > $project_name/tests/main_lib_test.cpp << EOF
+#include <gtest/gtest.h>
+#include <main_lib.h>
+
+TEST(HelloWorldTest, String) {
+    EXPECT_EQ(create_hello_world(), "Hello, World!\n");
+}
+EOF
 #####################################################
 
 
