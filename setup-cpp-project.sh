@@ -9,9 +9,11 @@ echo "It will create a basic directory structure and CMakeLists.txt files for yo
 # Install System Dependencies
 
 # Check if CMake exists, if not prompt the install
+echo "Checking system for dependencies..."
+echo
 if ! command -v cmake &> /dev/null; then
     echo "WARNING: CMake is not installed. It is a required part of this script."
-    read -p "Would you like to proceed? (y/n)" choice
+    read -p "Would you like to proceed? (y/n): " choice
     if [[ $choice =~ ^[Yy]$ ]]; then
         sudo apt install cmake
     else
@@ -19,12 +21,14 @@ if ! command -v cmake &> /dev/null; then
         echo "Aborting script..."
         exit 1
     fi
+else
+    echo "SUCCESS: CMake is installed on this system."
 fi
 
 # Check if Git exists, if not prompt the install
 if ! command -v git &> /dev/null; then
     echo "WARNING: Git is not installed. It is a required part of this script."
-    read -p "Would you like to proceed? (y/n)" choice
+    read -p "Would you like to proceed? (y/n): " choice
     if [[ $choice =~ ^[Yy]$ ]]; then
         sudo apt install git
     else
@@ -32,12 +36,14 @@ if ! command -v git &> /dev/null; then
         echo "Aborting script..."
         exit 1
     fi
+else
+    echo "SUCCESS: Git is installed on this system."
 fi
 
 # Check if C++ compiler, if not prompt installation
 if ! command -v g++ &> /dev/null && ! command -v clang++ &> /dev/null; then
     echo "WARNING: No C++ compiler installed. This is necessary for CMake to compile your project."
-    read -p "Would you like to install one? (y/n)" choice
+    read -p "Would you like to install one? (y/n): " choice
     echo
     if [[ $choice =~ ^[Yy]$ ]]; then
         PS3="Which compiler would you like to install: "
@@ -66,6 +72,8 @@ if ! command -v g++ &> /dev/null && ! command -v clang++ &> /dev/null; then
     else
         echo "WARNING: Continuing without C++ compiler, you will need to configure one later."
     fi
+else
+    echo "SUCCESS: A C++ compiler is installed on this system."
 fi
 #####################################################
 
@@ -73,15 +81,18 @@ fi
 #####################################################
 # Create the project directory structure
 read -p "Enter the project name: " project_name
+echo -n "Building directory structure in dir $project_name..."
 mkdir -p $project_name/src
 mkdir -p $project_name/include
 mkdir -p $project_name/tests
 mkdir -p $project_name/build
+echo "Done"
 #####################################################
 
 
 #####################################################
 # Create placeholder .cpp files
+echo -n "Creating sample .cpp files..."
 cat > $project_name/src/main.cpp << EOF
 // THIS IS EXAMPLE CODE - YOU CAN SAFELY DELETE THE FILE CONTENTS
 #include <iostream>
@@ -114,11 +125,13 @@ TEST(HelloWorldTest, String) {
     EXPECT_EQ(create_hello_world(), "Hello, World!\n");
 }
 EOF
+echo "Done"
 #####################################################
 
 
 #####################################################
 # Create the root CMakeLists.txt file for the project
+echo -n "Creating project root CMakeLists.txt file..."
 cat > $project_name/CMakeLists.txt << EOF
 cmake_minimum_required(VERSION 3.10)
 project($project_name)
@@ -133,22 +146,26 @@ include_directories(include)
 add_subdirectory(src)
 add_subdirectory(tests)
 EOF
+echo "Done"
 #####################################################
 
 
 #####################################################
 # Create a CMakeLists.txt file for the src directory
+echo -n "Creating project/src CMakeList.txt file..."
 cat > $project_name/src/CMakeLists.txt << EOF
 add_library(main_lib main_lib.cpp)
 add_executable(\${PROJECT_NAME} main.cpp)
 target_include_directories(main_lib PUBLIC ../include)
 target_link_libraries(\${PROJECT_NAME} PRIVATE main_lib)
 EOF
+echo "Done"
 #####################################################
 
 
 #####################################################
 # Create a CMakeLists.txt file for the tests directory
+echo -n "Creating project/tests CMakeList.txt file..."
 cat > $project_name/tests/CMakeLists.txt << EOF
 include(FetchContent)
 
@@ -169,4 +186,14 @@ target_link_libraries(\${PROJECT_NAME}_unit_test PUBLIC GTest::gtest_main)
 gtest_discover_tests(\${PROJECT_NAME}_unit_test)
 
 EOF
+echo "Done"
+#####################################################
+
+
+#####################################################
+# Clean up messages
+echo "Script has completed setup for $project_name in your current working directory"
+echo "You can now find the template project in $PWD/$project_name/"
+echo "You can build the template project running cd $project_name/build && cmake .. && cmake --build ."
+read -p "Press enter to exit..."
 #####################################################
