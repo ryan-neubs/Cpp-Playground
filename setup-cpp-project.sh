@@ -55,10 +55,12 @@ if ! command -v g++ &> /dev/null && ! command -v clang++ &> /dev/null; then
                 "clang++")
                     echo "Installing clang++..."
                     sudo apt install clang++
+                    break
                     ;;
                 "g++")
                     echo "Installing g++..."
-                    sudo apt install g++
+                    sudo apt install g++ -y
+                    break
                     ;;
                 "Cancel")
                     echo "WARNING: Cancelling install and continuing with out a C++ compiler. You will need to configure one later."
