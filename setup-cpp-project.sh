@@ -83,6 +83,7 @@ mkdir -p $project_name/build
 #####################################################
 # Create placeholder .cpp files
 cat > $project_name/src/main.cpp << EOF
+// THIS IS EXAMPLE CODE - YOU CAN SAFELY DELETE THE FILE CONTENTS
 #include <iostream>
 
 int main() {
@@ -91,6 +92,7 @@ int main() {
 EOF
 
 cat > $project_name/src/main_lib.cpp << EOF
+// THIS IS EXAMPLE CODE - YOU CAN SAFELY DELETE THE FILE CONTENTS
 #include <string>
 
 std::string create_hello_world() {
@@ -99,10 +101,12 @@ std::string create_hello_world() {
 EOF
 
 cat > $project_name/include/main_lib.h << EOF
+// THIS IS EXAMPLE CODE - YOU CAN SAFELY DELETE THE FILE CONTENTS
 std::string create_hello_world();
 EOF
 
 cat > $project_name/tests/main_lib_test.cpp << EOF
+// THIS IS EXAMPLE CODE - YOU CAN SAFELY DELETE THE FILE CONTENTS
 #include <gtest/gtest.h>
 #include <main_lib.h>
 
